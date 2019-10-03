@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 import time
+import string
 
 class FloorOhFour(Exception):
     pass
@@ -26,7 +27,7 @@ class Lift(object):
             self.intended_floor = destination
             return True
         else:
-            raise FloorOhFour('Floor {num} not found, cannot go there.'.format(num=destination))
+            raise FloorOhFour('Floor {destination} not found, cannot go there.'.format(destination=destination))
 
     def act(self):
         if self.intended_floor is not None:
@@ -38,15 +39,23 @@ class Lift(object):
             else:
                 self.lift_position += 1
 
+def sanitize(user_input):
+    return int(''.join([i for i in user_input if i in string.digits]) )
+
 lifts = [
     Lift(starting_floor=2)
 ]
+
 
 while True:
     user_input = input(
         'Which floor has a button press? (none for... none):'
     ).strip()
-    
+
+    if user_input and [ i for i in user_input if i in string.digits]:
+        user_input = sanitize(user_input)
+    else:
+         user_input = None
     
     for lift in lifts:
         if user_input:
