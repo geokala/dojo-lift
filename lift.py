@@ -32,7 +32,7 @@ class Lift(object):
     def act(self):
         if self.intended_floor is not None:
             if self.intended_floor == self.lift_position:
-                print('We have arrived!')
+                print('We have arrived at the {floor}!'.format(floor=self.floor_names[self.lift_position]))
                 self.intended_floor = None
             elif self.intended_floor < self.lift_position:
                 self.lift_position -= 1
