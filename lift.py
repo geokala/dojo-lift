@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# Disclaimer: No liability for loss of income or limbs accepted.
 import time
 import string
 
