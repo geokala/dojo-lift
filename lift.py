@@ -17,24 +17,24 @@ class Lift(object):
     def __init__(self, lift_shaft=0, starting_floor=0):
         self.lift_position = starting_floor
         self.lift_shaft = lift_shaft
-        self.intended_floor = None
+        self.intended_floors = []
 
     def call(self, destination):
-        if self.intended_floor is not None:
+        if len(self.intended_floors) > 3:
             # We already have a floor we're trying to reach, sorry!
             return False
         elif 0 <= destination < len(self.floor_names):
-            self.intended_floor = destination
+            self.intended_floors.append(destination)
             return True
         else:
             raise FloorOhFour('Floor {destination} not found, cannot go there.'.format(destination=destination))
 
     def act(self):
-        if self.intended_floor is not None:
-            if self.intended_floor == self.lift_position:
+        if len(self.intended_floors) > 0:
+            if self.lift_position in self.intended_floors:
                 print('We have arrived at the {floor}!'.format(floor=self.floor_names[self.lift_position]))
-                self.intended_floor = None
-            elif self.intended_floor < self.lift_position:
+                self.intended_floors.remove(self.lift_position)
+            elif self.intended_floors[0] < self.lift_position:
                 self.lift_position -= 1
             else:
                 self.lift_position += 1
@@ -58,7 +58,7 @@ while True:
          user_input = None
     
     for lift in lifts:
-        if user_input:
+        if user_input is not None:
             lift.call(int(user_input))
         lift.act()
-        print(lift.lift_position,lift.intended_floor)
+        print(lift.lift_position,lift.intended_floors)
