@@ -19,7 +19,7 @@ class Lift(object):
         self.intended_floor = None
 
     def call(self, destination):
-        if self.intended_floor:
+        if self.intended_floor is not None:
             # We already have a floor we're trying to reach, sorry!
             return False
         elif 0 <= destination < len(self.floor_names):
@@ -29,7 +29,7 @@ class Lift(object):
             raise FloorOhFour('Floor {num} not found, cannot go there.'.format(num=destination))
 
     def act(self):
-        if self.intended_floor:
+        if self.intended_floor is not None:
             if self.intended_floor == self.lift_position:
                 print('We have arrived!')
                 self.intended_floor = None
@@ -52,3 +52,4 @@ while True:
         if user_input:
             lift.call(int(user_input))
         lift.act()
+        print(lift.lift_position,lift.intended_floor)
